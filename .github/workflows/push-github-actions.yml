@@ -1,0 +1,39 @@
+name: PushDockerImage
+on:
+  push:
+    branches:
+      - main
+  workflow_dispatch:
+
+jobs:
+
+  train:
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+    steps:
+    - uses: actions/checkout@v3
+    - name: Set up Python 3.10
+      uses: actions/setup-python@v3
+      with:
+        python-version: '3.10.11'
+    - name: download csv
+      run: |
+        cd sentiment_model/datasets
+        wget -q https://cdn.iisc.talentsprint.com/AIandMLOps/MiniProjects/Datasets/Reviews.csv
+        ls | grep ".csv"     
+    - name: Install dependencies
+      run: pip install -r requirements/requirements.txt
+    - name: Train 
+      run: python sentiment_model/train_model.py
+    - name: ls
+      run: ls -lrt
+    - name: Predict
+      run: python sentiment_model/predict.py
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-trained-sentimenal-model
+        path: sentiment_model/trained_models/*.pkl
+    - name: ls
+      run: ls -lrt    
+ 
