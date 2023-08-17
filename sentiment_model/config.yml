@@ -1,0 +1,64 @@
+# Package Overview
+package_name: sentiment_model
+
+# Data Files
+training_data_file: Reviews.csv
+
+# Variables
+# The variable we are attempting to predict 
+
+model_name: sentiment_model
+model_save_file: sentiment__model_output_v
+tokenizer_json_file: food_review_tokenizer.json
+#dataset_link: "https://cdn.iisc.talentsprint.com/AIandMLOps/MiniProjects/Datasets/Reviews.csv"
+
+# Features that will go inside processing pipeline
+features:
+- ProductId       
+- UserId          
+- ProfileName    
+- Score           
+- Time            
+- Summary        
+- Text
+- Sentiment
+
+unused_fields:  # Features to drop before pipeline
+- Id
+- HelpfulnessNumerator
+- HelpfulnessDenominator
+
+# Features names
+product_id_var: ProductId
+user_id_var: UserId
+profile_name_var: ProfileName
+score_var: Score
+time_var: Time
+summary_var: Summary
+text_var: Text
+sentiment_var: Sentiment
+vocab_size_var: 20000
+
+# Set train/test split
+test_size: 0.20
+validation_size: 0.25
+
+# Set the random seed
+random_state: 42
+
+# Alogrithm parameters
+n_estimators: 10
+max_depth: 10
+max_len: 100
+embedding_dim: 32
+lstm_units: 40
+lstm_dropouts: 0.2
+lstm_recurrent_dropouts: 0.2
+num_tokens: 20000
+activation: sigmoid
+loss: binary_crossentropy
+optimizer: adam
+metrics: accuracy
+batch_size: 128
+epochs: 3
+earlystop: 1
