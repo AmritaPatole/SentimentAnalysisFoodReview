@@ -1,6 +1,7 @@
-__author__ = 'Amrita'
-__author_email__ = 'amritapatole@gmail.com'
-__license__ = 'MIT'
-__maintainer_email__ = ''
-__url__ = ''
-__version__ = '0.0.1'
+import sys
+from pathlib import Path
+sys.path.append(str(Path(__file__).resolve().parent.parent))
+
+from sentiment_model.config.core import PACKAGE_ROOT, config
+with open(PACKAGE_ROOT / "VERSION") as version_file:
+    __version__ = version_file.read().strip()

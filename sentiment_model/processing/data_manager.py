@@ -1,28 +1,21 @@
 import json
-import os
 import sys
-from pathlib import Path
-from datetime import datetime
 import pdb
+from pathlib import Path
+import typing as t
+from pathlib import Path
+
+import pandas as pd
+from tensorflow import keras
+from tensorflow.keras.preprocessing.text import Tokenizer, tokenizer_from_json
+from keras.callbacks import ModelCheckpoint, EarlyStopping
+from sentiment_model import __version__ as _version
+from sentiment_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR
+from sentiment_model.config.core import TRAINED_TOKENIZER_DIR, config
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
 sys.path.append(str(root))
-
-import typing as t
-from pathlib import Path
-
-import joblib
-import pandas as pd
-from sklearn.pipeline import Pipeline
-from tensorflow import keras
-from tensorflow.keras.preprocessing.text import Tokenizer, tokenizer_from_json
-from tensorflow.keras.preprocessing.sequence import pad_sequences
-from keras.callbacks import ModelCheckpoint, EarlyStopping
-
-from sentiment_model import __version__ as _version
-from sentiment_model.config.core import DATASET_DIR, TRAINED_MODEL_DIR, TRAINED_TOKENIZER_DIR, config
-
 
 ##  Pre-Pipeline Preparation
 # Extract time
@@ -79,27 +72,14 @@ def remove_old_model(*, files_to_keep: t.List[str]) -> None:
         if model_file.name not in do_not_delete:
             model_file.unlink()
             
-def callbacks_and_save_model():
-    callback_list = []
-    
+def get_model_filepath():
     # Prepare versioned save file name
-    save_file_name = f"{config.app_config.model_save_file}{_version}"
+    save_file_name = f"{config.app_config.model_save_file}{_version}.pkl"
     save_path = TRAINED_MODEL_DIR / save_file_name
 
     remove_old_model(files_to_keep = [save_file_name])
+    return str(save_path)
 
-    # Default callback
-    if config.model_config.earlystop > 0:
-        early_stopping = EarlyStopping(monitor='val_loss', verbose=1, patience=2, min_delta=0.001)
-        callback_list.append(early_stopping)
-    
-    best_model_checkpoint= ModelCheckpoint(filepath = str(save_path),
-                    save_best_only = True,
-                    verbose=1,
-                    monitor = 'val_loss')    
-    callback_list.append( best_model_checkpoint)
-    
-    return callback_list
 
 def load_model(*, file_name: str) -> keras.models.Model:
     """Load a persisted model."""
@@ -112,7 +92,8 @@ def save_tokenizer(tokenizer, filename):
     json_string = tokenizer.to_json()
     filepath = TRAINED_TOKENIZER_DIR / filename
     # remove existing file
-    Path(filepath).unlink()
+    if Path(filepath).is_file():
+        Path(filepath).unlink()
     # write to a file
     with open(str(filepath), 'w') as f:
         json.dump(json_string, f)
@@ -120,10 +101,10 @@ def save_tokenizer(tokenizer, filename):
     
 def load_tokenizer(filename):
     filepath = Path(f"{TRAINED_TOKENIZER_DIR}/{filename}")
-    if filepath.exists:
+    if filepath.is_file():
         print(f"Found saved tokenizer at {filepath}")
         with open(filepath) as f:
-            json_string = json.loads(f)
+            json_string = json.load(f)
             return tokenizer_from_json(json_string)
     return None
     

@@ -37,7 +37,7 @@ time_var: Time
 summary_var: Summary
 text_var: Text
 sentiment_var: Sentiment
-vocab_size_var: 20000
+vocab_size_var: 2000
 
 # Set train/test split
 test_size: 0.20
@@ -54,7 +54,7 @@ embedding_dim: 32
 lstm_units: 40
 lstm_dropouts: 0.2
 lstm_recurrent_dropouts: 0.2
-num_tokens: 20000
+num_tokens: 2000
 activation: sigmoid
 loss: binary_crossentropy
 optimizer: adam

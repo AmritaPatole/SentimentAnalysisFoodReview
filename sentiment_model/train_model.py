@@ -3,12 +3,13 @@ from pathlib import Path
 import json
 import nltk
 import numpy as np
+import pdb
 
 nltk.download('stopwords')
 nltk.download('punkt')
 from nltk.tokenize import word_tokenize
 from sklearn.model_selection import train_test_split
-
+from keras.callbacks import EarlyStopping, ModelCheckpoint
 
 file = Path(__file__).resolve()
 parent, root = file.parent, file.parents[1]
@@ -21,7 +22,7 @@ from sklearn.metrics import mean_squared_error, r2_score
 
 from sentiment_model.config.core import config
 from sentiment_model.model import create_model
-from sentiment_model.processing.data_manager import load_dataset, load_tokenizer, callbacks_and_save_model, create_tokenizer, save_tokenizer
+from sentiment_model.processing.data_manager import load_dataset, load_tokenizer, get_model_filepath, create_tokenizer, save_tokenizer
 from sentiment_model.processing.feature import clean_dataset
 
 def run_training() -> None:
@@ -30,7 +31,7 @@ def run_training() -> None:
     print("Read data successfully")
     
     # clean dataset
-    data = clean_dataset(text=data[config.model_config.text_var].values)
+    data[config.model_config.text_var] = data[config.model_config.text_var].apply(clean_dataset)    
     print("Preprocessing complete")
     
     # Split the dataset into training and testing sets
@@ -67,8 +68,13 @@ def run_training() -> None:
     # create a model
     model = create_model()
     
+    # Prepare versioned save file name
+    save_file_name = get_model_filepath()
+    callbacks_list = [EarlyStopping(monitor="val_loss", patience=2),
+                      ModelCheckpoint(save_file_name,save_best_only=True)]
+    
     history = model.fit(X_train_pad, y_train, batch_size=config.model_config.batch_size, epochs=config.model_config.epochs, verbose=1,
-                        validation_data = (X_val_pad,y_val), callbacks = callbacks_and_save_model)
+                        validation_data = (X_val_pad,y_val), callbacks = callbacks_list)
     
     print('Testing...')
     y_test = np.array(y_test)
