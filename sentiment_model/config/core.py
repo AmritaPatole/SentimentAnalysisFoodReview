@@ -104,7 +104,6 @@ def fetch_config_from_yaml(cfg_path: Path = None) -> YAML:
 
 
 def create_and_validate_config(parsed_config: YAML = None) -> Config:
-    pdb.set_trace()
     """Run validation on config values."""
     if parsed_config is None:
         parsed_config = fetch_config_from_yaml()
