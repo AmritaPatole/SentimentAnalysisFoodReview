@@ -32,8 +32,14 @@ jobs:
       run: python sentiment_model/predict.py
     - uses: actions/upload-artifact@v2
       with:
-        name: my-trained-sentimenal-model
+        name: my-trained-sentiment-model
         path: sentiment_model/trained_models/*.pkl
+        retention-days: 1
+    - uses: actions/upload-artifact@v2
+      with:
+        name: my-trained-tokenizer
+        path: sentiment_model/trained_tokenizer/*.json
+        retention-days: 1
     - name: ls
       run: ls -lrt    
  
@@ -50,7 +56,7 @@ jobs:
         python-version: '3.10'
     - uses: actions/download-artifact@v2
       with:
-        name: my-trained-sentimenal-model
+        name: my-trained-sentiment-model
     - run: mv *.pkl sentiment_model/trained_models/
     - name: Install dependencies
       run: pip install -r requirements/test_requirements.txt
@@ -70,7 +76,7 @@ jobs:
         python-version: '3.10'
     - uses: actions/download-artifact@v2
       with:
-        name: my-trained-sentimenal-model
+        name: my-trained-sentiment-model
     - run: mv *.pkl sentiment_model/trained_models/
     - name: Install dependencies
       run: pip install --upgrade build
@@ -80,6 +86,7 @@ jobs:
       with:
         name: my-build-package
         path: dist/*.whl
+        retention-days: 1
 
   push-image:
     needs: [train, test, build]
