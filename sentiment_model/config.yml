@@ -8,7 +8,7 @@ training_data_file: Reviews.csv
 # The variable we are attempting to predict 
 
 model_name: sentiment_model
-model_save_file: sentiment__model_output_v
+model_save_file: sentiment_model_output_v
 tokenizer_json_file: food_review_tokenizer.json
 #dataset_link: "https://cdn.iisc.talentsprint.com/AIandMLOps/MiniProjects/Datasets/Reviews.csv"
 
