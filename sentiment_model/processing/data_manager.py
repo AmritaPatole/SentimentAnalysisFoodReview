@@ -32,7 +32,7 @@ def AddSentiment(dataframe: pd.DataFrame, score_var: str, sentiment_var: str) ->
 
 def convert_sentiment_to_numerical(dataframe: pd.DataFrame) -> pd.DataFrame:
     df = dataframe.copy()
-    df[config.model_config.sentiment_var] = df[config.model_config.sentiment_var].apply(lambda x: 1 if x=="positive" else 0)
+    df[config.model_config.sentiment_var] = df[config.model_config.sentiment_var].apply(lambda x: 1 if x=='Positive' else 0)
     return df
 
 def pre_pipeline_preparation(*, data_frame: pd.DataFrame) -> pd.DataFrame:
@@ -41,7 +41,7 @@ def pre_pipeline_preparation(*, data_frame: pd.DataFrame) -> pd.DataFrame:
     
     # Add new column 'Sentiment' based on 'Score'
     data_frame = AddSentiment(dataframe = data_frame, score_var = config.model_config.score_var,
-                              sentiment_var= 'Sentiment')
+                              sentiment_var= config.model_config.sentiment_var)
     
     # Drop unnecessary fields
     for field in config.model_config.unused_fields:
