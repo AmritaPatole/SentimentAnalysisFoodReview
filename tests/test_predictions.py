@@ -24,5 +24,5 @@ def test_precision(sample_input_data):
         print("Predicted Sentiment:", predicted_sentiment)
         print("Sentiment Probability:", sentiment_probability)
         
-    assert sentiment_probability > 0.2
+    assert sentiment_probability > 0.8
     

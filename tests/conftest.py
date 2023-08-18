@@ -12,9 +12,9 @@ sys.path.append(str(Path(__file__).resolve().parent.parent))
 @pytest.fixture
 def sample_input_data():
   test_data = [
-    "I hardly eat chinese food for lunch!",
-    "cold tea, did not enjoy it",
-    "who wants to eat chinese for lunch?",
-    "this food is exactly what I was looking for!!"
+    "Thank you! I was craving for this ice cream for so long!!",
+    "I hate to see how inflation has increases for small food items?",
+    "small portions, perfect for light dinners",
+    "will buy this food again."
     ] 
   return test_data
