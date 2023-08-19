@@ -5,6 +5,7 @@ recursive-include ./sentiment_model *
 
 recursive-include sentiment_model/datasets *
 recursive-include sentiment_model/trained_models *
+recursive-include sentiment_model/trained_tokenizer *
 include sentiment_model/VERSION
 include sentiment_model/config.yml
 
