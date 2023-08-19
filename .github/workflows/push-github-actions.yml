@@ -58,6 +58,10 @@ jobs:
       with:
         name: my-trained-sentiment-model
     - run: mv *.pkl sentiment_model/trained_models/
+    - uses: actions/download-artifact@v2
+      with:
+        name: my-trained-tokenizer
+    - run: mv *.json sentiment_model/trained_tokenizer/
     - name: Install dependencies
       run: pip install -r requirements/test_requirements.txt
     - name: Test with pytest
