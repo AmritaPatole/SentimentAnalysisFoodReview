@@ -6,8 +6,8 @@ class DataInputSchema(BaseModel):
     inputs: Optional[str] 
     
 class PredictionResults(BaseModel):
-    errors: Optional[Any]
-    version: str
+    #errors: Optional[Any]
+    #version: str
     #predictions: Optional[List[int]]
-    predictions: Optional[int]
+    predictions: Optional[float]
 

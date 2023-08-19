@@ -57,6 +57,8 @@ def pre_pipeline_preparation(*, data_frame: pd.DataFrame) -> pd.DataFrame:
     return data_frame
 
 def load_dataset(*, file_name: str) -> pd.DataFrame:
+    print(str(DATASET_DIR))
+    print(file_name)
     dataframe = pd.read_csv(Path(f"{DATASET_DIR}/{file_name}"))    
     transformed = pre_pipeline_preparation(data_frame=dataframe)
     return transformed
@@ -101,6 +103,7 @@ def save_tokenizer(tokenizer, filename):
     
 def load_tokenizer(filename):
     filepath = Path(f"{TRAINED_TOKENIZER_DIR}/{filename}")
+    print(str(filepath))
     if filepath.is_file():
         print(f"Found saved tokenizer at {filepath}")
         with open(filepath) as f:
