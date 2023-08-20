@@ -87,11 +87,11 @@ jobs:
         name: my-trained-tokenizer
     - run: mv *.json sentiment_model/trained_tokenizer/
     - name: Install dependencies
-      run: pip install --upgrade build
-    - name: Build package
       run: |
+        cp sentiment_model/VERSION sentiment_model/
         pip install --upgrade build
-        python -m build
+    - name: Build package
+      run: python -m build
     - uses: actions/upload-artifact@v2
       with:
         name: my-build-package
